@@ -1,2 +1,3 @@
 Flask
-gunicorn  # Isse production mein use karna hai
+gunicorn
+requests
