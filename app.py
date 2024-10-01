@@ -1,10 +1,9 @@
 from flask import Flask, request, render_template, redirect, url_for, session
 import requests
-import math
-import json
+import os
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # सुरक्षा के लिए एक मजबूत सीक्रेट की सेट करें
+app.secret_key = os.environ.get('SECRET_KEY', 'your_secret_key')  # सुरक्षा के लिए एक मजबूत सीक्रेट की सेट करें
 
 # JWT टोकन को स्टोर करने के लिए सत्र का उपयोग
 def get_jwt_token():
@@ -116,7 +115,6 @@ def get_token(phone_no, otp):
 
 # चैप्टर डेटा प्राप्त करने का फ़ंक्शन
 def fetch_chapter_data(chapter_url):
-    # URL से बैच ID, सब्जेक्ट ID, चैप्टर ID निकालना
     try:
         # उदाहरण URL: https://www.pw.live/study/batches/yakeen-neet-2-0-2025-801657/subjects/physics-legend-885582/subject-topics/topics/ch-01---basic-maths-and-calculus-246028/contents
         parts = chapter_url.split('/')
@@ -158,4 +156,5 @@ def fetch_chapter_data(chapter_url):
         return None
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Render par PORT environment variable se read hoga
+    app.run(host='0.0.0.0', port=port, debug=False)  # Debug ko production ke liye off karein
